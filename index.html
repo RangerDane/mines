@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <header>
+      mines
+    </header>
+    <main>
+      <article class="instructions">
+        step 1: do the thing
+        step 2: awesome
+      </article>
+      <div id="board">
+
+      </div>
+      <div id="settings">
+        <div class="quick">
+          <button id="beginner">Beginner</button>
+          <button id="intermediate">Intermediate</button>
+          <button id="expert">Expert</button>
+        </div>
+        <div class="inputs">
+          <div>
+            <label for="height">Height</label>
+            <input type="tel" id="height" name="height" value="16"/>
+          </div>
+          <div>
+            <label for="width">Width</label>
+            <input type="tel" id="width" name="width" value="30"/>
+          </div>
+          <div>
+            <label for="mines">Mines</label>
+            <input type="tel" id="mines" name="mines" value="99"/>
+          </div>
+        </div>
+        <div id="error"></div>
+        <button id="newgame">New Game</input>
+      </div>
+    </main>
+    <script type="text/javascript" src="./game.js"></script>
+  </body>
+</html>
