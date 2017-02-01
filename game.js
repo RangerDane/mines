@@ -18,6 +18,9 @@ var icons = {
   ]
 };
 
+// utils
+const query = id => document.getElementById(id)
+
 const minesweeper = ({ height, width, mines }) => {
   var state = {
     board: [],
@@ -31,8 +34,9 @@ const minesweeper = ({ height, width, mines }) => {
     row = []
     for (var x = 0; x < width; x++) {
       row.push({
-        revealed: false,
-        adjacent: null,
+        revealed: true,
+        adjacent: 0,
+        flagged: false,
         bomb: null
       })
     }
@@ -40,56 +44,75 @@ const minesweeper = ({ height, width, mines }) => {
   }
 
   const seedmines = ({ x, y }) => {
-    state.seeded = true
-    console.log("seeding")
+    // build array of bombs [true, false]
+    bombz = []
+    for (var i = 0; i < (height * width); i++) {
+      if( i < mines ) bombz.push(true)
+      else bombz.push(false)
+    }
+    // shuffle (fisher-yates)
+    let n = bombz.length
+    while( n > 0 ) {
+      i = Math.floor(Math.random() * n--)
+      // swap elements in place
+      bombz[n] = [bombz[i], bombz[i] = bombz[n]][0]
+    }
+    // test if first bomb found at first click
+    if( bombz[x*(y+1)]) {
+      i = 0
+      while ( bombz[i] ) i++
+      bombz[i] = true
+      bombz[x*(y+1)] = false
+    }
+
   }
 
   const bfs = ({ x, y }) => {
-    if( state.board[x][y] ) {
-      console.log("nice");
+    if( x > 0 && x < width && y > 0 && y < height ) {
+      let { revealed, adjacent, bomb } = state.board[y][x]
+
     }
   }
 
   const purify = ({ board, finished, won }) => ({
     won,
     finished,
-    board: board.map(row => row.map(({ revealed, adjacent, bomb }) => {
-      let box = { revealed }
-      if (revealed) {
-        box.adjacent = adjacent
-        box.bomb = bomb
-      }
-      return box
+    board: board.map(row => row.map(({ revealed, adjacent, bomb, flagged }) => {
+      if( flagged ) return "flagged"
+      if( revealed && bomb ) return "bomb"
+      if( revealed ) return "revealed" + adjacent
+      return "hidden"
     }))
   })
 
   const reveal = ({ x, y }) => {
-    // state.board[x][y].revealed = true
+    if (!state.seeded) seedmines({ x, y })
     bfs({ x, y })
     return purify(state)
   }
 
   const flag = ({ x, y }) => {
-
+    state.board[y][x].flagged = true
+    return purify(state)
   }
 
   return { reveal, flag }
 }
 
-const creategameview = ( boardel, settings ) => {
+const creategameview = ( boardel, settingsel ) => {
   // here's the ugly part of the code that a framework lets you abstract away
   const els = {
     board: boardel,
-    beginner: document.getElementById("beginner"),
-    intermediate: document.getElementById("intermediate"),
-    expert: document.getElementById("expert"),
-    newgame: document.getElementById("newgame"),
+    beginner: query("beginner"),
+    intermediate: query("intermediate"),
+    expert: query("expert"),
+    newgame: query("newgame"),
 
-    error: document.getElementById("error"),
+    error: query("error"),
 
-    height: document.getElementById("height"),
-    width: document.getElementById("width"),
-    mines: document.getElementById("mines")
+    height: query("height"),
+    width: query("width"),
+    mines: query("mines")
   }
 
   const invalidparams = ({ height, width, mines }, err) => {
@@ -107,34 +130,48 @@ const creategameview = ( boardel, settings ) => {
 
   const newgame = (thunk,err) => () => {
     let { height, width, mines } = thunk()
+    if( invalidparams({ height, width, mines }, err) ) return
+    let game = minesweeper({ height, width, mines })
 
-    if( invalidparams({ height, width, mines }, err) ) return;
-
+    // this is the messy way to do things
     boardel.innerHTML = ""
 
     // "virtual DOM"
     var elements = [], rowarr, rowdiv, box
-    for (var y = 0; y < height; y++) {
-      row = document.createElement("div")
-      for (var x = 0; x < width; x++) {
-        box = document.createElement("BUTTON")
-        box.className = ""
-        box.onclick = handleclick({ x, y })
-        row.appendChild( box )
-        rowarr.push( box )
+    const buildboard = () => {
+      for (var y = 0; y < height; y++) {
+        rowdiv = document.createElement("div")
+        rowarr = []
+        for (var x = 0; x < width; x++) {
+          box = document.createElement("BUTTON")
+          box.className = ""
+          box.onclick = click({ x, y })
+          box.oncontextmenu = rightclick({ x, y })
+          rowdiv.appendChild( box )
+          rowarr.push( box )
+        }
+        boardel.appendChild( rowdiv )
+        elements.push( rowarr )
       }
-      boardel.appendChild( row )
-      elements.
     }
 
-    let game = minesweeper({ height, width, mines })
+    const render = ({ board }) => {
+      board.forEach( (row,y) => row.forEach( (box,x) => {
+        elements[y][x].className = box
+      }))
+    }
 
-    const handleclick = ({ x, y }) => () => {
-      console.log("lol u clicked " + x + ", " + y);
+    const click = ({ x, y }) => () => {
       render(game.reveal({ x, y }))
     }
 
-    // this is the messy way to do things
+    const rightclick = ({ x, y }) => (event) => {
+      event.preventDefault()
+      render(game.flag({ x, y }))
+      return false
+    }
+
+    buildboard()
   }
 
   const renderpresets = ({ height, width, mines }) => () => {
@@ -150,7 +187,6 @@ const creategameview = ( boardel, settings ) => {
   })
 
   const error = (message) => {
-    console.log(message);
     els.error.innerHTML = message
   }
 
@@ -162,7 +198,4 @@ const creategameview = ( boardel, settings ) => {
   newgame(getparams,error)()
 }
 
-creategameview(
-  document.getElementById("board"),
-  document.getElementById("settings")
-)
+creategameview( query("board"), query("settings") )

@@ -71,6 +71,10 @@ div#board button:active {
   background-image: url('http://i.imgur.com/bGT8xGEb.jpg');
 }
 
+div#board button.flagged {
+  background-image: url('http://i.imgur.com/nLPvW15b.jpg');
+}
+
 div.settings div {
   text-align: right;
 }
