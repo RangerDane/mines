@@ -18,9 +18,26 @@ var icons = {
   ]
 };
 
-// utils
-const query = id => document.getElementById(id)
+icons = {
+  blank: './blank.jpg',
+  pressed: './pressed.jpg',
+  exposedBomb: './exposedBomb.jpg',
+  explodedBomb: './explodedBomb.jpg',
+  flag: './flag.jpg',
+  bombs: [
+    './adj0.jpg',
+    './adj1.jpg',
+    './adj2.jpg',
+    './adj3.jpg',
+    './adj4.jpg',
+    './adj5.jpg',
+    './adj6.jpg',
+    './adj7.jpg',
+    './adj8.jpg'
+  ]
+}
 
+// game logic
 const minesweeper = ({ height, width, mines }) => {
   var state = {
     board: [],
@@ -34,54 +51,84 @@ const minesweeper = ({ height, width, mines }) => {
     row = []
     for (var x = 0; x < width; x++) {
       row.push({
-        revealed: true,
+        revealed: false,
         adjacent: 0,
         flagged: false,
-        bomb: null
+        bomb: false,
+        exploded: false
       })
     }
     state.board.push( row )
   }
 
+  const withinbounds = ({ x, y }) => ( x < width && x >= 0 && y < height && y >= 0 )
+
+  const plantbomb = ({ x, y }) => {
+    state.board[y][x].bomb = true;
+    [-1,0,1].forEach( adjy => [-1,0,1].forEach( adjx => {
+      if( withinbounds({ x: adjx + x, y: adjy + y }))
+        state.board[adjy+y][adjx+x].adjacent += 1
+    }))
+  }
+
   const seedmines = ({ x, y }) => {
-    // build array of bombs [true, false]
-    bombz = []
+    let pos = (y * width + x) // map click coords to 1d position
+    // build bool array of bombs. flat array for shuffling/moving simplicity
+    let bombz = []
     for (var i = 0; i < (height * width); i++) {
       if( i < mines ) bombz.push(true)
       else bombz.push(false)
     }
-    // shuffle (fisher-yates)
-    let n = bombz.length
+    // shuffle (knuth-fisher-yates)
+    let n = bombz.length, swap
     while( n > 0 ) {
       i = Math.floor(Math.random() * n--)
-      // swap elements in place
-      bombz[n] = [bombz[i], bombz[i] = bombz[n]][0]
+      swap = bombz[n]; bombz[n] = bombz[i]; bombz[i] = swap
     }
-    // test if first bomb found at first click
-    if( bombz[x*(y+1)]) {
+    // test if a bomb is found at first click position. if so, move it to the top left,
+    // moving rightwards until an empty box is found (a la windows minesweeper)
+    if( bombz[pos] ) {
       i = 0
       while ( bombz[i] ) i++
       bombz[i] = true
-      bombz[x*(y+1)] = false
+      bombz[pos] = false
     }
-
+    // do the thing
+    bombz.forEach( (bomb, idx) => {
+      if( bomb ) {
+        let x = idx % width, y = Math.floor(idx / width)
+        plantbomb({ x, y })
+      }
+    })
+    state.seeded = true
   }
 
   const bfs = ({ x, y }) => {
-    if( x > 0 && x < width && y > 0 && y < height ) {
-      let { revealed, adjacent, bomb } = state.board[y][x]
-
+    let queue = [{ x, y }]
+    while( queue.length > 0 ) {
+      let { x, y } = queue.shift()
+      let { revealed, adjacent, flagged } = state.board[y][x]
+      if( !revealed ) {
+        state.board[y][x].revealed = true
+        if( adjacent === 0 && !flagged ) {
+          [ [0,-1], [1,0], [0,1], [-1,0] ].forEach( ([deltay, deltax]) => {
+            let next = { x: x + deltax, y: y + deltay }
+            if( withinbounds(next) )
+              queue.push(next)
+          })
+        }
+      }
     }
   }
 
   const purify = ({ board, finished, won }) => ({
     won,
     finished,
-    board: board.map(row => row.map(({ revealed, adjacent, bomb, flagged }) => {
-      if( flagged ) return "flagged"
-      if( revealed && bomb ) return "bomb"
-      if( revealed ) return "revealed" + adjacent
-      return "hidden"
+    board: board.map(row => row.map(({ revealed, adjacent, bomb, flagged, exploded }) => {
+      if( revealed )
+        return { revealed, adjacent, bomb, exploded }
+      else
+        return { revealed, flagged }
     }))
   })
 
@@ -92,110 +139,10 @@ const minesweeper = ({ height, width, mines }) => {
   }
 
   const flag = ({ x, y }) => {
-    state.board[y][x].flagged = true
+    state.board[y][x].flagged = !state.board[y][x].flagged
     return purify(state)
   }
 
+  // console.log(purify(state));
   return { reveal, flag }
 }
-
-const creategameview = ( boardel, settingsel ) => {
-  // here's the ugly part of the code that a framework lets you abstract away
-  const els = {
-    board: boardel,
-    beginner: query("beginner"),
-    intermediate: query("intermediate"),
-    expert: query("expert"),
-    newgame: query("newgame"),
-
-    error: query("error"),
-
-    height: query("height"),
-    width: query("width"),
-    mines: query("mines")
-  }
-
-  const invalidparams = ({ height, width, mines }, err) => {
-    message = []
-    if ( height < 1 || width < 1 ) {
-      message.push( "Height and width must be greater than 1." )
-    } else if ( height > 100 || width > 100) {
-      message.push( "Height and Width must be less than 100.")
-    } else if ( mines > ( height * width ) - 1 ) {
-      message.push( "The board can't fit that many mines!" )
-    }
-    err( message.join(" ") )
-    return message.length > 0
-  }
-
-  const newgame = (thunk,err) => () => {
-    let { height, width, mines } = thunk()
-    if( invalidparams({ height, width, mines }, err) ) return
-    let game = minesweeper({ height, width, mines })
-
-    // this is the messy way to do things
-    boardel.innerHTML = ""
-
-    // "virtual DOM"
-    var elements = [], rowarr, rowdiv, box
-    const buildboard = () => {
-      for (var y = 0; y < height; y++) {
-        rowdiv = document.createElement("div")
-        rowarr = []
-        for (var x = 0; x < width; x++) {
-          box = document.createElement("BUTTON")
-          box.className = ""
-          box.onclick = click({ x, y })
-          box.oncontextmenu = rightclick({ x, y })
-          rowdiv.appendChild( box )
-          rowarr.push( box )
-        }
-        boardel.appendChild( rowdiv )
-        elements.push( rowarr )
-      }
-    }
-
-    const render = ({ board }) => {
-      board.forEach( (row,y) => row.forEach( (box,x) => {
-        elements[y][x].className = box
-      }))
-    }
-
-    const click = ({ x, y }) => () => {
-      render(game.reveal({ x, y }))
-    }
-
-    const rightclick = ({ x, y }) => (event) => {
-      event.preventDefault()
-      render(game.flag({ x, y }))
-      return false
-    }
-
-    buildboard()
-  }
-
-  const renderpresets = ({ height, width, mines }) => () => {
-    els.height.value = height
-    els.width.value = width
-    els.mines.value = mines
-  }
-
-  const getparams = () => ({
-    height: parseInt(els.height.value),
-    width: parseInt(els.width.value),
-    mines: parseInt(els.mines.value)
-  })
-
-  const error = (message) => {
-    els.error.innerHTML = message
-  }
-
-  els.beginner.onclick = renderpresets({ height: 9, width: 9, mines: 10 })
-  els.intermediate.onclick = renderpresets({ height: 16, width: 16, mines: 40 })
-  els.expert.onclick = renderpresets({ height: 16, width: 30, mines: 99 })
-
-  els.newgame.onclick = newgame(getparams,error)
-  newgame(getparams,error)()
-}
-
-creategameview( query("board"), query("settings") )

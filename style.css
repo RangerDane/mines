@@ -6,7 +6,7 @@ body, html, div, header {
 
 button {
   border: 0;
-  outline: none;
+  /*outline: none;*/
   background-color: #DDD;
 }
 
@@ -47,6 +47,11 @@ div#settings div#error {
   color: red;
 }
 
+div#settings button#newgame {
+  padding: 1rem;
+  width: 400px;
+}
+
 div#board {
   padding: 1rem;
   background-color: #DDD;
@@ -59,20 +64,20 @@ div#board div {
 }
 
 div#board button {
-  height: 1rem;
-  width: 1rem;
-  border: 0;
-  background-image: url('http://i.imgur.com/HM1e3Tbb.jpg');
+  height: 1.5rem;
+  width: 1.5rem;
   background-size: cover;
   outline: none;
+
+  background-image: url('http://i.imgur.com/HM1e3Tbb.jpg');
+  background-image: url('./blank.jpg');
 }
 
 div#board button:active {
-  background-image: url('http://i.imgur.com/bGT8xGEb.jpg');
-}
-
-div#board button.flagged {
-  background-image: url('http://i.imgur.com/nLPvW15b.jpg');
+  /*width: 10rem;*/
+  /*background-image: url('http://i.imgur.com/bGT8xGEb.jpg');*/
+  width: 1.75rem;
+  background-image: url('./pressed.jpg');
 }
 
 div.settings div {
