@@ -6,23 +6,16 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <header>
-      mines
-    </header>
     <main>
-      <article class="instructions">
-        step 1: do the thing
-        step 2: awesome
-      </article>
       <div id="board">
 
       </div>
-      <div id="settings">
-        <div class="quick">
-          <button id="beginner">Beginner</button>
-          <button id="intermediate">Intermediate</button>
-          <button id="expert">Expert</button>
+      <div id="controls">
+        <div class="game">
+          <button id="undo">Undo</button>
+          <button id="newgame">New Game</button>
         </div>
+        <div id="error"></div>
         <div class="inputs">
           <div>
             <label for="height">Height</label>
@@ -37,8 +30,11 @@
             <input type="tel" id="mines" name="mines" value="10"/>
           </div>
         </div>
-        <div id="error"></div>
-        <button id="newgame">New Game</input>
+        <div class="quick">
+          <button id="beginner">Beginner</button>
+          <button id="intermediate">Intermediate</button>
+          <button id="expert">Expert</button>
+        </div>
       </div>
     </main>
     <!-- keeping things simple for simplicity's sake -->
