@@ -19,22 +19,21 @@ var icons = {
 };
 
 // was on a bus for 7 hours with spotty internet
-icons.blank = './blank.jpg'
-icons.pressed = './pressed.jpg'
-icons.exposedBomb = './exposedBomb.jpg'
-icons.explodedBomb = './explodedBomb.jpg'
-icons.flag = './flag.jpg'
-icons.bombs = [
-  './adj0.jpg',
-  './adj1.jpg',
-  './adj2.jpg',
-  './adj3.jpg',
-  './adj4.jpg',
-  './adj5.jpg',
-  './adj6.jpg',
-  './adj7.jpg',
-  './adj8.jpg'
-]
+// icons.blank = './blank.jpg'
+// icons.pressed = './pressed.jpg'
+// icons.exposedBomb = './exposedBomb.jpg'
+// icons.explodedBomb = './explodedBomb.jpg'
+// icons.flag = './flag.jpg'
+// icons.bombs = [
+//   './adj0.jpg',
+//   './adj1.jpg',
+//   './adj2.jpg',
+//   './adj3.jpg',
+//   './adj4.jpg',
+//   './adj5.jpg',
+//   './adj6.jpg',
+//   './adj7.jpg',
+//   './adj8.jpg' ]
 
 // utils
 const querydom = id => document.getElementById(id)
@@ -102,7 +101,7 @@ const creategameview = ( boardel ) => {
         for (var x = 0; x < width; x++) {
           box = document.createElement("BUTTON")
           box.onclick = click({ x, y })
-          // box.oncontextmenu = rightclick({ x, y })
+          box.oncontextmenu = rightclick({ x, y })
           rowdiv.appendChild( box )
           rowarr.push( box )
         }

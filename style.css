@@ -95,3 +95,25 @@ div#controls button#newgame {
   padding: 1rem;
   width: 400px;
 }
+
+div#controls div.inputs div {
+  display: flex;
+  padding: 0.25rem 4rem;
+}
+
+div.inputs div label {
+  flex: 0 1 25%;
+  text-align: right;
+}
+
+div.inputs div input {
+  flex: 0 1 75%;
+  max-width: 50%;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  border: 0;
+  background-color: #CCC;
+  text-align: center;
+}
