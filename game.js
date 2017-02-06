@@ -1,7 +1,6 @@
 //  f u n c t i o n a l  game logic
 const minesweeper = (state, action) => {
   // deep clone state without lodash
-  // state = JSON.parse(JSON.stringify(state))
   let { height, width, board, seeded, lost, won, mines } = JSON.parse(JSON.stringify(state))
 
   if( lost || won )
@@ -95,15 +94,16 @@ const minesweeper = (state, action) => {
 
   // win condition is, all non-mines are revealed
   const checkifwon = (board) => {
+    // note: originally tried with a .reduce pattern, ran into trouble
     let didiwin = true;
     board.forEach( row => row.forEach( box => {
-      if( !box.bomb && !box.revealed ) {
+      if( !box.bomb && !box.revealed )
         didiwin = false
-      }
     }))
     return didiwin
   }
 
+  // logic for when a single block is revealed
   const reveal = ({ x, y }) => {
     if (!seeded) seedbombs({ x, y })
     if ( board[y][x].bomb ) {
@@ -115,6 +115,7 @@ const minesweeper = (state, action) => {
     }
   }
 
+  // logic for when a single block is flagged
   const flag = ({ x, y }) => {
     board[y][x].flagged = !board[y][x].flagged
   }
