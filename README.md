@@ -14,8 +14,8 @@ If a mine is found on the first revealed tile, I move it to the first empty cell
 minesweeper behavior.
 
 Deep cloning an object without lodash is tough (`Object.assign` only does a shallow copy) so I used a `JSON.parse(JSON.stringify(state))`
-pattern. If anyone has any deep existential issues with this, please let me know! I'm curious to find a clean generalized solution to this.
+pattern. If anyone has any deep existential issues with this, please let me know! I'm curious to learn about clean, generalized solutions.
 
 ## Issues
 Despite believing that I got the algorithm correct, a good friend of mine and seasoned Minesweeper veteran (6,567 games logged) has stated
-that my version doesn't "feel" like the classic. I'd love to get to the bottom of this.
+that my version doesn't "feel" like the classic. I'd love to get to the bottom of this. It's probably that undo button, isn't it?
