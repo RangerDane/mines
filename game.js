@@ -30,6 +30,7 @@ const minesweeper = (state, action) => {
     }))
   }
 
+  // TODO: make this function pure (take seed from gameview)
   const seedbombs = ({ x, y }) => {
     // map click coords to 1d position
     let pos = (y * width + x)
@@ -106,7 +107,7 @@ const minesweeper = (state, action) => {
   // logic for when a single block is revealed
   const reveal = ({ x, y }) => {
     if (!seeded) seedbombs({ x, y })
-    if ( board[y][x].bomb ) {
+    if ( board[y][x].bomb && !board[y][x].flagged ) {
       board[y][x].exploded = true
       revealbombs()
       lost = true
