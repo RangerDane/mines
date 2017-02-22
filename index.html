@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Minesweeper</title>
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Quicksand:300" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
@@ -12,11 +13,11 @@
         <h2>Instructions</h2>
         <p><strong>Click</strong> on any cell to reveal it. Don't worry, your first click will always be safe.</p>
         <p><strong>Right-click</strong> on any cell to flag it. Use this to mark spaces you are sure contain a mine. This feature is optional, but extremely helpful.</p>
-        <p>The only way to <strong>win</strong> is to reveal every square that does not contain a mine.</p>
+        <p>To <strong>win</strong> the game, reveal every square that does not contain a mine.</p>
         <p>If you accidentally uncover a mine, you <strong>lose</strong>. But don't worry, you can click <strong>undo</strong> as many times as you want.</p>
-        <p>Minesweeper is a game about collapsing probabilities, and following information to make accurate decisions. Click on a cell to uncover it, but be careful not to bank on luck alone - use the information at your disposal to find the location of every mine, and proceed only with confidence. Here are some common patterns:</p>
+        <p>Minesweeper is a game about collapsing probabilities, and using data to increase decision-making confidence. Be careful not to bank on luck alone - use the information at your disposal to reason about the location of every mine, and proceed when you are confident. Here are some common patterns:</p>
         <h2>Common Patterns</h2>
-        <figure class="example left">
+        <figure class="example">
           <div class="miniboard">
             <div class="row">
               <div class="blank"></div><div class="blank"></div><div class="blank"></div>
@@ -28,10 +29,12 @@
               <div class="blank"></div><div class="blank"></div><div class="blank"></div>
             </div>
           </div>
-          <figcaption>Ex. 1: Uncertainty</figcaption>
+          <figcaption>Example 1: Uncertainty</figcaption>
         </figure>
-        <p>Revealed squares will contain a number (1-8), indicating the number of mines immediately adjacent to it, either by edge or by corner. In example 1, you know there are exactly 3 mines underneath the 8 covered squares - but it's impossible to know exactly which ones, based on what we know.</p>
-        <figure class="example right">
+
+        <p class="clear">Revealed squares will contain a number (1-8), indicating the number of mines immediately adjacent to it, by edge or by corner. In example 1, you know there are exactly 3 mines underneath the 8 covered squares surrounding the 3 - but it's impossible to know exactly which ones, based on what we know. It's advisable not to uncover these squares at this stage.</p>
+
+        <figure class="example">
           <div class="miniboard">
             <div class="row">
               <div class="adj2"></div><div class="blank"></div><div class="adj1"></div>
@@ -43,29 +46,27 @@
               <div class="adj1"></div><div class="adj1"></div><div class="blank"></div>
             </div>
           </div>
-          <figcaption>Ex. 2: Confidence</figcaption>
+          <figcaption>Example 2: Certainty</figcaption>
         </figure>
-        <p class="clearleft">The center square in example 2 here tells us it's next to 3 mines - and there are exactly 3 uncovered squares adjacent to it. We can then know, with complete confidence, that each uncovered square contains a mine.</p>
-        <figure class="example left">
+
+        <p class="clear">The center square in example 2 here is certainly adjacent to 3 mines - and there are exactly 3 uncovered squares around it. We can then deduce, with complete certainty, that every uncovered square around the 3 contains a mine. Flagging these will be helpful before moving on.</p>
+
+        <figure class="example">
           <div class="miniboard">
             <div class="row">
-              <div class="adj0"></div><div class="adj1"></div><div class="blank"></div><div class="blank"></div><div class="adj0"></div>
+              <div class="blank"></div><div class="adj0"></div><div class="adj0"></div>
             </div>
             <div class="row">
-              <div class="adj0"></div><div class="adj1"></div><div class="adj2"></div><div class="adj2"></div><div class="adj0"></div>
+              <div class="blank"></div><div class="adj1"></div><div class="adj1"></div>
             </div>
             <div class="row">
-              <div class="adj0"></div><div class="adj1"></div><div class="flag"></div><div class="adj1"></div><div class="adj0"></div>
+              <div class="blank"></div><div class="flag"></div><div class="adj1"></div>
             </div>
-            <div class="row">
-              <div class="adj0"></div><div class="adj1"></div><div class="adj1"></div><div class="adj1"></div><div class="adj0"></div>
-            </div>
-            <!-- <div class="row">
-              <div class="adj1"></div><div class="adj1"></div><div class="blank"></div><div class=""></div>
-            </div> -->
           </div>
-          <figcaption>Ex. 2: Confidence</figcaption>
+          <figcaption>Example 2: Derived certainty</figcaption>
+
         </figure>
+        <p class="clear">The center right square containing [1] is only adjacent to one covered square - therefore, this square must contain a mine - and so we flag it accordingly and move on. The square in the center is adjacent to one mine, and we are now certain about where it is. We can safely reveal the three squares to the left without risk.</p>
       </section>
     </header>
     <main>

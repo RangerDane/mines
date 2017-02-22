@@ -1,17 +1,23 @@
 * {
-  font-family: 'Verdana', sans-serif;
+  font-family: 'Crimson Text', sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+body {
+  min-height: 100vh;
+}
+
 header {
-  float: left;
-  width: 33vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 500px;
 
-  max-height: 100vh;
-  height: 100vh;
+  min-height: 100vh;
 
+  font-size: 18px;
 
   h1 {
     padding: 2rem;
@@ -19,64 +25,58 @@ header {
     background-color: black;
     color: white;
     text-align: center;
-    text-transform: uppercase;
-    font-weight: 700;
+    // text-transform: uppercase;
+
+    font-family: "Quicksand", serif;
+    font-weight: 300;
+    font-size: 48px;
   }
 
   section {
     padding: 1rem;
     overflow-y: auto;
+    display: inline-block;
   }
 
   box-shadow: 0 0 15px black;
 }
 
 p, h2 {
-  margin: 1rem 0;
+  margin: 24px 0;
+}
+
+p {
+  text-align: justify;
+}
+
+p.clear {
+  margin-left: 100px;
 }
 
 figure.example {
-  padding: 1rem;
   // float: left;
   // margin: 0 1rem 1rem 0;
   border: 1px solid black;
 
-  text-align: center;
+  max-width: 120px;
 
   figcaption {
     text-align: center;
     font-style: italic;
-    margin-top: 0.25rem;
+    margin: 12px;
   }
-}
 
-figure.left {
   float: left;
   margin: 0 1rem 1rem 0;
 
-  clear: right;
-}
-
-figure.right {
-  float: right;
-  margin: 0 0 1rem 1rem;
-
-  clear: left;
-}
-
-p.clearleft {
-  clear: left;
-}
-
-p.clearright {
-  clear: right;
+  clear: both;
 }
 
 div.miniboard {
-  background-color: #AAA;
+  background-color: #DDD;
   font-size: 0;
-
-  display: inline-block;
+  max-width: 72px;
+  margin: 12px auto;
 
   // width: 4.5rem;
 
@@ -85,8 +85,8 @@ div.miniboard {
     display: block;
 
     > div {
-      height: 1.5rem;
-      width: 1.5rem;
+      height: 24px;
+      width: 24px;
       background-size: cover;
       display: inline-block;
       border: 1px solid black;
@@ -123,6 +123,11 @@ button {
 
 main {
   min-height: 100vh;
+
+  position: absolute;
+  left: 500px;
+  top: 0px;
+  right: 0px;
   display: flex;
   justify-content: center;
   flex-direction: column;
