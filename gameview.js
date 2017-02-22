@@ -1,39 +1,19 @@
-var icons = {
-  blank: 'http://i.imgur.com/HM1e3Tbb.jpg',
-  pressed: 'http://i.imgur.com/bGT8xGEb.jpg',
-  exposedBomb: 'http://i.imgur.com/pTJ8Swhb.jpg',
-  explodedBomb: 'http://i.imgur.com/UFmXprFb.jpg',
-  flag: 'http://i.imgur.com/nLPvW15b.jpg',
-  // Index is # of adjacent bombs
+const icons = {
+  blank: './images/uncovered.png',
+  exposedBomb: './images/bomb.png',
+  explodedBomb: './images/explodedbomb.png',
+  flag: './images/flagged.png',
   bombs: [
-    'http://i.imgur.com/Flqdqi1b.jpg', // 0
-    'http://i.imgur.com/bM8oExob.jpg', // 1
-    'http://i.imgur.com/bQKSbqYb.jpg', // 2
-    'http://i.imgur.com/5jNcEeVb.jpg', // 3
-    'http://i.imgur.com/BnxjHgHb.jpg', // 4
-    'http://i.imgur.com/RaFrMYcb.jpg', // 5
-    'http://i.imgur.com/GlwQOy0b.jpg', // 6
-    'http://i.imgur.com/8ngsVa8b.jpg', // 7
-    'http://i.imgur.com/lJ8P1wab.jpg'  // 8
-  ]
-};
-
-// was on a bus for 7 hours with spotty internet
-// icons.blank = './blank.jpg'
-// icons.pressed = './pressed.jpg'
-// icons.exposedBomb = './exposedBomb.jpg'
-// icons.explodedBomb = './explodedBomb.jpg'
-// icons.flag = './flag.jpg'
-// icons.bombs = [
-//   './adj0.jpg',
-//   './adj1.jpg',
-//   './adj2.jpg',
-//   './adj3.jpg',
-//   './adj4.jpg',
-//   './adj5.jpg',
-//   './adj6.jpg',
-//   './adj7.jpg',
-//   './adj8.jpg' ]
+    './images/adj0.png',
+    './images/adj1.png',
+    './images/adj2.png',
+    './images/adj3.png',
+    './images/adj4.png',
+    './images/adj5.png',
+    './images/adj6.png',
+    './images/adj7.png',
+    './images/adj8.png' ]
+}
 
 // utils
 const querydom = id => document.getElementById(id)
@@ -100,8 +80,8 @@ const creategameview = ( boardel ) => {
         rowarr = []
         for (var x = 0; x < width; x++) {
           box = document.createElement("BUTTON")
-          box.onclick = click({ x, y })
-          box.oncontextmenu = rightclick({ x, y })
+          box.onmousedown = click({ x, y })
+          box.oncontextmenu = prevent
           rowdiv.appendChild( box )
           rowarr.push( box )
         }
@@ -151,30 +131,37 @@ const creategameview = ( boardel ) => {
 
     const dispatch = ( action ) => {
       newstate = minesweeper(state, action)
-      console.log("DISPATCHING");
-      console.log(state);
       if( JSON.stringify(newstate) !== JSON.stringify(state) )
         previousStates.push(state)
       state = newstate
     }
 
-    const click = ({ x, y }) => () => {
-      dispatch({
-        type: "REVEAL",
-        data: { x, y }
-      })
-      render()
-    }
-
-    const rightclick = ({ x, y }) => (event) => {
-      event.preventDefault()
-      dispatch({
-        type: "FLAG",
-        data: { x, y }
-      })
+    const click = ({ x, y }) => (e) => {
+      if( e.button === 0 || e.button === 1 ) {
+        dispatch({
+          type: "REVEAL",
+          data: { x, y }
+        })
+      } else if( e.button === 2) {
+        e.preventDefault()
+        dispatch({
+          type: "FLAG",
+          data: { x, y }
+        })
+      }
       render()
       return false
     }
+
+    const prevent = (e) => {
+      e.preventDefault()
+      return false;
+    }
+
+    // const rightclick = ({ x, y }) => (event) => {
+    //   render()
+    //   return false
+    // }
 
     const undo = () => {
       state = previousStates.pop()

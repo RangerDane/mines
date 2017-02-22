@@ -3,12 +3,74 @@
   <head>
     <meta charset="utf-8">
     <title>Minesweeper</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
+    <header>
+      <h1>Minesweeper</h1>
+      <section>
+        <h2>Instructions</h2>
+        <p><strong>Click</strong> on any cell to reveal it. Don't worry, your first click will always be safe.</p>
+        <p><strong>Right-click</strong> on any cell to flag it. Use this to mark spaces you are sure contain a mine. This feature is optional, but extremely helpful.</p>
+        <p>The only way to <strong>win</strong> is to reveal every square that does not contain a mine.</p>
+        <p>If you accidentally uncover a mine, you <strong>lose</strong>. But don't worry, you can click <strong>undo</strong> as many times as you want.</p>
+        <p>Minesweeper is a game about collapsing probabilities, and following information to make accurate decisions. Click on a cell to uncover it, but be careful not to bank on luck alone - use the information at your disposal to find the location of every mine, and proceed only with confidence. Here are some common patterns:</p>
+        <h2>Common Patterns</h2>
+        <figure class="example left">
+          <div class="miniboard">
+            <div class="row">
+              <div class="blank"></div><div class="blank"></div><div class="blank"></div>
+            </div>
+            <div class="row">
+              <div class="blank"></div><div class="adj3"></div><div class="blank"></div>
+            </div>
+            <div class="row">
+              <div class="blank"></div><div class="blank"></div><div class="blank"></div>
+            </div>
+          </div>
+          <figcaption>Ex. 1: Uncertainty</figcaption>
+        </figure>
+        <p>Revealed squares will contain a number (1-8), indicating the number of mines immediately adjacent to it, either by edge or by corner. In example 1, you know there are exactly 3 mines underneath the 8 covered squares - but it's impossible to know exactly which ones, based on what we know.</p>
+        <figure class="example right">
+          <div class="miniboard">
+            <div class="row">
+              <div class="adj2"></div><div class="blank"></div><div class="adj1"></div>
+            </div>
+            <div class="row">
+              <div class="blank"></div><div class="adj3"></div><div class="adj1"></div>
+            </div>
+            <div class="row">
+              <div class="adj1"></div><div class="adj1"></div><div class="blank"></div>
+            </div>
+          </div>
+          <figcaption>Ex. 2: Confidence</figcaption>
+        </figure>
+        <p class="clearleft">The center square in example 2 here tells us it's next to 3 mines - and there are exactly 3 uncovered squares adjacent to it. We can then know, with complete confidence, that each uncovered square contains a mine.</p>
+        <figure class="example left">
+          <div class="miniboard">
+            <div class="row">
+              <div class="adj0"></div><div class="adj1"></div><div class="blank"></div><div class="blank"></div><div class="adj0"></div>
+            </div>
+            <div class="row">
+              <div class="adj0"></div><div class="adj1"></div><div class="adj2"></div><div class="adj2"></div><div class="adj0"></div>
+            </div>
+            <div class="row">
+              <div class="adj0"></div><div class="adj1"></div><div class="flag"></div><div class="adj1"></div><div class="adj0"></div>
+            </div>
+            <div class="row">
+              <div class="adj0"></div><div class="adj1"></div><div class="adj1"></div><div class="adj1"></div><div class="adj0"></div>
+            </div>
+            <!-- <div class="row">
+              <div class="adj1"></div><div class="adj1"></div><div class="blank"></div><div class=""></div>
+            </div> -->
+          </div>
+          <figcaption>Ex. 2: Confidence</figcaption>
+        </figure>
+      </section>
+    </header>
     <main>
-      <div id="board">
-
+      <div class="field">
+        <div id="board"></div>
       </div>
       <div id="controls">
         <div class="game">

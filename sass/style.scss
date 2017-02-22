@@ -1,0 +1,235 @@
+* {
+  font-family: 'Verdana', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  float: left;
+  width: 33vw;
+
+  max-height: 100vh;
+  height: 100vh;
+
+
+  h1 {
+    padding: 2rem;
+
+    background-color: black;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  section {
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  box-shadow: 0 0 15px black;
+}
+
+p, h2 {
+  margin: 1rem 0;
+}
+
+figure.example {
+  padding: 1rem;
+  // float: left;
+  // margin: 0 1rem 1rem 0;
+  border: 1px solid black;
+
+  text-align: center;
+
+  figcaption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.25rem;
+  }
+}
+
+figure.left {
+  float: left;
+  margin: 0 1rem 1rem 0;
+
+  clear: right;
+}
+
+figure.right {
+  float: right;
+  margin: 0 0 1rem 1rem;
+
+  clear: left;
+}
+
+p.clearleft {
+  clear: left;
+}
+
+p.clearright {
+  clear: right;
+}
+
+div.miniboard {
+  background-color: #AAA;
+  font-size: 0;
+
+  display: inline-block;
+
+  // width: 4.5rem;
+
+  > div.row {
+    font-size: 0;
+    display: block;
+
+    > div {
+      height: 1.5rem;
+      width: 1.5rem;
+      background-size: cover;
+      display: inline-block;
+      border: 1px solid black;
+    }
+  }
+
+  div.bomb { background-image: url('../images/bomb.png'); }
+  div.flag { background-image: url('../images/flagged.png'); }
+  div.blank { background-image: url('../images/uncovered.png'); }
+  div.explodedbomb { background-image: url('../images/explodedbomb.png'); }
+  div.adj0 { background-image: url('../images/adj0.png'); }
+  div.adj1 { background-image: url('../images/adj1.png'); }
+  div.adj2 { background-image: url('../images/adj2.png'); }
+  div.adj3 { background-image: url('../images/adj3.png'); }
+  div.adj4 { background-image: url('../images/adj4.png'); }
+  div.adj5 { background-image: url('../images/adj5.png'); }
+  div.adj6 { background-image: url('../images/adj6.png'); }
+  div.adj7 { background-image: url('../images/adj7.png'); }
+  div.adj8 { background-image: url('../images/adj8.png'); }
+}
+
+body, html, div {
+  font-family: 'Verdana';
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: 0;
+  padding: 1rem;
+  outline: none;
+  background-color: #DDD;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.field {
+  background-image: url('../images/ivan-dimitroff-118653.jpg');
+  background-size: cover;
+  border-radius: 1rem;
+}
+
+div#board {
+  /*background-color: #999;*/
+  display: inline-block;
+  border-radius: 1rem;
+  padding: 0;
+  border: 1rem solid #CCC;
+}
+
+div#board.lost {
+  padding: 0;
+  border: 1rem solid #C00;
+  transition: 250ms;
+}
+
+div#board.won {
+  border-width: 0;
+  border: 1rem solid #0C0;
+  transition: 250ms;
+}
+
+div#board div {
+  font-size: 0;
+}
+
+div#board button {
+  height: 1.5rem;
+  width: 1.5rem;
+  background-size: cover;
+  outline: none;
+  margin: 0;
+
+  background-color: rgba(0,0,0,0);
+  background-image: url('../images/uncovered.png');
+}
+
+div#controls {
+  width: 400px;
+}
+
+div#controls > div {
+  padding-top: 1rem;
+}
+
+div#controls button {
+  border-radius: 0.5rem;
+  margin: 0.25rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+div#controls div.game, div#controls div.quick {
+  display: flex;
+}
+
+div#controls div.quick button {
+  flex: 1 0 auto;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+div#controls button:hover {
+  background-color: #EEE;
+}
+
+div#controls button:active {
+  background-color: #FFF;
+}
+
+div#controls div#error {
+  color: red;
+}
+
+div#controls button#newgame {
+  padding: 1rem;
+  width: 400px;
+}
+
+div#controls div.inputs div {
+  display: flex;
+  padding: 0.25rem 4rem;
+}
+
+div.inputs div label {
+  flex: 0 1 25%;
+  text-align: right;
+}
+
+div.inputs div input {
+  flex: 0 1 75%;
+  max-width: 50%;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  border: 0;
+  background-color: #CCC;
+  text-align: center;
+}

@@ -30,14 +30,22 @@ const minesweeper = (state, action) => {
     }))
   }
 
-  // TODO: make this function pure (take seed from gameview)
   const seedbombs = ({ x, y }) => {
-    // map click coords to 1d position
-    let pos = (y * width + x)
+    // let pos = ( y * width + x )
 
-    // build bool array of bombs. flat array for shuffling/moving simplicity
     let bombz = []
-    for (var i = 0; i < (height * width); i++) {
+    let reduce = 9
+    // first click is in a corner
+    if(( x === 0 || x === width - 1 ) && ( y === 0 || y === height - 1 )) {
+      reduce = 4
+    // first click is on an edge
+    } else if ( x === 0 || y === 0 || x === width - 1 || y === height - 1 ) {
+      reduce = 6
+    }
+
+    // one-dimensional array of mine placement (reduced in length by the 3x3
+    // box around the first click)
+    for (var i = 0; i < (height * width) - reduce; i++) {
       if( i < mines ) bombz.push(true)
       else bombz.push(false)
     }
@@ -45,31 +53,24 @@ const minesweeper = (state, action) => {
     // shuffle (knuth-fisher-yates)
     let n = bombz.length, swap
     while( n > 0 ) {
-      i = Math.floor(Math.random() * n--)
+      i = Math.floor( Math.random() * n-- )
       swap = bombz[n]; bombz[n] = bombz[i]; bombz[i] = swap
     }
 
-    // test if a bomb is found at first click position. if so, move it to the
-    // first empty box (a la windows minesweeper)
-    if( bombz[pos] ) {
-      let empty = 0
-      while ( bombz[empty] ) empty++
-      bombz[empty] = true
-      bombz[pos] = false
+    for (var yy = 0; yy < height; yy++) {
+      for (var xx = 0; xx < width; xx++) {
+        if( (Math.abs( x - xx ) > 1 || Math.abs( y - yy ) > 1) ) {
+          if( bombz.pop() )
+            plantbomb({ x: xx, y: yy })
+        }
+      }
     }
 
-    // do the thing
-    bombz.forEach( (bomb, idx) => {
-      if( bomb ) {
-        let x = idx % width, y = Math.floor(idx / width)
-        plantbomb({ x, y })
-      }
-    })
     seeded = true
   }
 
   const revealbombs = () => {
-    board.map( row => row.map( box => {
+    board.forEach( row => row.forEach( box => {
       if( box.bomb )
         box.revealed = true
     }))
@@ -81,9 +82,9 @@ const minesweeper = (state, action) => {
     while( queue.length > 0 ) {
       let { x, y } = queue.shift()
       let { revealed, adjacent, flagged } = board[y][x]
-      if( !revealed ) {
+      if( !revealed && !flagged ) {
         board[y][x].revealed = true
-        if( adjacent === 0 && !flagged ) {
+        if( adjacent === 0 ) {
           [ [0,-1], [1,0], [0,1], [-1,0] ].forEach( ([deltay, deltax]) => {
             let next = { x: x + deltax, y: y + deltay }
             if (withinbounds(next)) queue.push(next)
