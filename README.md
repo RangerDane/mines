@@ -1,7 +1,8 @@
 # Functional Minesweeper
 
 [Try it out!](https://rangerdane.github.io/mines/)
-(Requires a modern browser with ES6 support)
+
+[![alt text](./images/sample-screenshot.png "A sample game state on Intermediate")](https://rangerdane.github.io/mines/)
 
 Or clone this yourself if you want. No build process, no baloney. `minesweeper()` is a pure reducer that takes a game state and an action,
 and returns the next game state. `creategameview()` takes an element and attaches a new game.
