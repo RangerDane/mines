@@ -1,8 +1,13 @@
 * {
-  font-family: 'Crimson Text', sans-serif;
+  // font-family: 'Crimson Text', sans-serif;
+  font-family: 'Oxygen', sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
@@ -10,13 +15,6 @@ body {
 }
 
 header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 500px;
-
-  min-height: 100vh;
-
   font-size: 18px;
 
   h1 {
@@ -32,13 +30,140 @@ header {
     font-size: 48px;
   }
 
-  section {
-    padding: 1rem;
-    overflow-y: auto;
-    display: inline-block;
-  }
+}
 
+header, div#controls {
   box-shadow: 0 0 15px black;
+}
+
+button {
+  border: 0;
+  padding: 1;
+  outline: none;
+  background-color: #DDD;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+div.field {
+  background-image: url('../images/ivan-dimitroff-118653.jpg');
+  background-size: cover;
+  border-radius: 1rem;
+}
+
+div#board {
+  /*background-color: #999;*/
+  display: inline-block;
+  border-radius: 1rem;
+  padding: 0;
+  border: 1rem solid #CCC;
+}
+
+div#board.lost {
+  padding: 0;
+  border: 1rem solid #C00;
+  transition: 250ms;
+}
+
+div#board.won {
+  border-width: 0;
+  border: 1rem solid #0C0;
+  transition: 250ms;
+}
+
+div#board div {
+  font-size: 0rem;
+}
+
+div#board button {
+  height: 2rem;
+  width: 2rem;
+  background-size: cover;
+  outline: none;
+  margin: 0;
+
+  background-color: rgba(0,0,0,0);
+  background-image: url('../images/uncovered.png');
+}
+
+div#controls {
+  padding: 0.5rem 0;
+  background-color: black;
+  text-align: center;
+}
+
+div#controls > div {
+  margin: 0.5rem 0;
+}
+
+div#controls button {
+  border-radius: 0.5rem;
+  margin: 0.25rem;
+  padding: 0.5rem;
+  min-width: 8rem;
+  font-size: 1.25rem;
+  background-color: rgba(255,255,255,0.75);
+}
+
+div#controls label {
+  font-size: 1.25rem;
+  color: white;
+}
+//
+// div#controls div.game, div#controls div.quick {
+//   display: flex;
+// }
+//
+
+
+div#controls button:hover {
+  background-color: #EEE;
+}
+
+div#controls button:active {
+  background-color: #FFF;
+}
+
+div#controls div#error {
+  color: red;
+}
+//
+// div#controls button#newgame {
+//   padding: 1rem;
+//   width: 400px;
+// }
+//
+// div#controls div.inputs div {
+//   display: flex;
+//   padding: 0.25rem 4rem;
+// }
+//
+// div.inputs div label {
+//   flex: 0 1 25%;
+//   text-align: right;
+// }
+//
+div.inputs input {
+  flex: 0 1 75%;
+  min-width: 4rem;
+  max-width: 4rem;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  border: 0;
+  background-color: #CCC;
+  text-align: center;
+}
+
+article {
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 p, h2 {
@@ -78,8 +203,6 @@ div.miniboard {
   max-width: 72px;
   margin: 12px auto;
 
-  // width: 4.5rem;
-
   > div.row {
     font-size: 0;
     display: block;
@@ -106,135 +229,4 @@ div.miniboard {
   div.adj6 { background-image: url('../images/adj6.png'); }
   div.adj7 { background-image: url('../images/adj7.png'); }
   div.adj8 { background-image: url('../images/adj8.png'); }
-}
-
-body, html, div {
-  font-family: 'Verdana';
-  margin: 0;
-  padding: 0;
-}
-
-button {
-  border: 0;
-  padding: 1rem;
-  outline: none;
-  background-color: #DDD;
-}
-
-main {
-  min-height: 100vh;
-
-  position: absolute;
-  left: 500px;
-  top: 0px;
-  right: 0px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-
-div.field {
-  background-image: url('../images/ivan-dimitroff-118653.jpg');
-  background-size: cover;
-  border-radius: 1rem;
-}
-
-div#board {
-  /*background-color: #999;*/
-  display: inline-block;
-  border-radius: 1rem;
-  padding: 0;
-  border: 1rem solid #CCC;
-}
-
-div#board.lost {
-  padding: 0;
-  border: 1rem solid #C00;
-  transition: 250ms;
-}
-
-div#board.won {
-  border-width: 0;
-  border: 1rem solid #0C0;
-  transition: 250ms;
-}
-
-div#board div {
-  font-size: 0;
-}
-
-div#board button {
-  height: 1.5rem;
-  width: 1.5rem;
-  background-size: cover;
-  outline: none;
-  margin: 0;
-
-  background-color: rgba(0,0,0,0);
-  background-image: url('../images/uncovered.png');
-}
-
-div#controls {
-  width: 400px;
-}
-
-div#controls > div {
-  padding-top: 1rem;
-}
-
-div#controls button {
-  border-radius: 0.5rem;
-  margin: 0.25rem;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-div#controls div.game, div#controls div.quick {
-  display: flex;
-}
-
-div#controls div.quick button {
-  flex: 1 0 auto;
-  padding: 1rem;
-  font-size: 1rem;
-}
-
-div#controls button:hover {
-  background-color: #EEE;
-}
-
-div#controls button:active {
-  background-color: #FFF;
-}
-
-div#controls div#error {
-  color: red;
-}
-
-div#controls button#newgame {
-  padding: 1rem;
-  width: 400px;
-}
-
-div#controls div.inputs div {
-  display: flex;
-  padding: 0.25rem 4rem;
-}
-
-div.inputs div label {
-  flex: 0 1 25%;
-  text-align: right;
-}
-
-div.inputs div input {
-  flex: 0 1 75%;
-  max-width: 50%;
-  padding: 0.25rem;
-  font-size: 1.25rem;
-  margin-left: 1rem;
-  border-radius: 0.5rem;
-  border: 0;
-  background-color: #CCC;
-  text-align: center;
 }

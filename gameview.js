@@ -76,7 +76,6 @@ const creategameview = ( boardel ) => {
       els.undo.onclick = undo
       for (var y = 0; y < height; y++) {
         rowdiv = document.createElement("div")
-        // rowdiv.style = "width: " + width * 2 + "rem;"
         rowarr = []
         for (var x = 0; x < width; x++) {
           box = document.createElement("BUTTON")
@@ -85,6 +84,7 @@ const creategameview = ( boardel ) => {
           rowdiv.appendChild( box )
           rowarr.push( box )
         }
+        rowdiv.style = "min-width: " + (width*2) + "rem;"
         boardel.appendChild( rowdiv )
         elements.push( rowarr )
       }

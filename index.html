@@ -3,12 +3,41 @@
   <head>
     <meta charset="utf-8">
     <title>Minesweeper</title>
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Quicksand:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Quicksand:300|Oxygen" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
     <header>
       <h1>Minesweeper</h1>
+    </header>
+    <main>
+      <div class="field">
+        <div id="board"></div>
+      </div>
+    </main>
+    <div id="controls">
+      <div class="game">
+        <button id="undo">Undo</button>
+        <label>New Game:</label>
+        <button id="beginner">Beginner</button>
+        <button id="intermediate">Intermediate</button>
+        <button id="expert">Expert</button>
+      </div>
+      <div id="error"></div>
+      <div class="inputs">
+        <label for="height">Height</label>
+        <input type="tel" id="height" name="height" value="9"/>
+        <label for="width">Width</label>
+        <input type="tel" id="width" name="width" value="9"/>
+        <label for="mines">Mines</label>
+        <input type="tel" id="mines" name="mines" value="10"/>
+        <button id="newgame">Custom New Game</button>
+      </div>
+    </div>
+    <!-- keeping things simple for simplicity's sake -->
+    <script type="text/javascript" src="./game.js"></script>
+    <script type="text/javascript" src="./gameview.js"></script>
+    <article class="instructions">
       <section>
         <h2>Instructions</h2>
         <p><strong>Click</strong> on any cell to reveal it. Don't worry, your first click will always be safe.</p>
@@ -68,40 +97,6 @@
         </figure>
         <p class="clear">The center right square containing [1] is only adjacent to one covered square - therefore, this square must contain a mine - and so we flag it accordingly and move on. The square in the center is adjacent to one mine, and we are now certain about where it is. We can safely reveal the three squares to the left without risk.</p>
       </section>
-    </header>
-    <main>
-      <div class="field">
-        <div id="board"></div>
-      </div>
-      <div id="controls">
-        <div class="game">
-          <button id="undo">Undo</button>
-          <button id="newgame">New Game</button>
-        </div>
-        <div id="error"></div>
-        <div class="inputs">
-          <div>
-            <label for="height">Height</label>
-            <input type="tel" id="height" name="height" value="9"/>
-          </div>
-          <div>
-            <label for="width">Width</label>
-            <input type="tel" id="width" name="width" value="9"/>
-          </div>
-          <div>
-            <label for="mines">Mines</label>
-            <input type="tel" id="mines" name="mines" value="10"/>
-          </div>
-        </div>
-        <div class="quick">
-          <button id="beginner">Beginner</button>
-          <button id="intermediate">Intermediate</button>
-          <button id="expert">Expert</button>
-        </div>
-      </div>
-    </main>
-    <!-- keeping things simple for simplicity's sake -->
-    <script type="text/javascript" src="./game.js"></script>
-    <script type="text/javascript" src="./gameview.js"></script>
+    </article>
   </body>
 </html>
