@@ -1,20 +1,3 @@
-const icons = {
-  blank: './images/uncovered.png',
-  exposedBomb: './images/bomb.png',
-  explodedBomb: './images/explodedbomb.png',
-  flag: './images/flagged.png',
-  bombs: [
-    './images/adj0.png',
-    './images/adj1.png',
-    './images/adj2.png',
-    './images/adj3.png',
-    './images/adj4.png',
-    './images/adj5.png',
-    './images/adj6.png',
-    './images/adj7.png',
-    './images/adj8.png' ]
-}
-
 // utils
 const querydom = id => document.getElementById(id)
 
@@ -84,7 +67,7 @@ const creategameview = ( boardel ) => {
           box.onmousedown = click({ x, y })
           box.oncontextmenu = prevent
           rowdiv.appendChild( box )
-          rowarr.push( box )
+          rowarr.push({ element: box, state: "uncovered" })
         }
         rowdiv.style = "min-width: " + (width*2) + "rem;"
         boardel.appendChild( rowdiv )
@@ -92,12 +75,13 @@ const creategameview = ( boardel ) => {
       }
     }
 
-    const setbg = ({ x, y, bg }) => {
-      let style = ""
-      if( bg )
-        style = "background-image: url('" + bg + "');"
-      if( elements[y][x].style !== style )
-        elements[y][x].style = style
+    const setstyle = ({ x, y, style }) => {
+      style = style || "uncovered"
+
+      if( elements[y][x].state !== style ) {
+        elements[y][x].element.className = style
+        elements[y][x].state = style
+      }
     }
 
     const render = () => {
@@ -117,16 +101,16 @@ const creategameview = ( boardel ) => {
       state.board.forEach( (row,y) => row.forEach( ({ revealed, adjacent, bomb, exploded, flagged },x) => {
         if( revealed ) {
           if( bomb && exploded ) {
-            setbg({ x, y, bg: icons.explodedBomb })
+            setstyle({ x, y, style: "exploded" })
           } else if ( bomb ) {
-            setbg({ x, y, bg: icons.exposedBomb })
+            setstyle({ x, y, style: "bomb" })
           } else {
-            setbg({ x, y, bg: icons.bombs[adjacent] })
+            setstyle({ x, y, style: ("adj" + adjacent) })
           }
         } else if ( flagged ) {
-          setbg({ x, y, bg: icons.flag })
+          setstyle({ x, y, style: "flagged" })
         } else {
-          setbg({ x, y }) //removes style so CSS can take over
+          setstyle({ x, y, style: "uncovered" })
         }
       }))
     }
@@ -179,7 +163,7 @@ const creategameview = ( boardel ) => {
     els.intermediate.className = ""
     els.expert.className = ""
     els.newgame.className = ""
-    els.newgame.disabled = true
+    // els.newgame.disabled = true
 
     if( height === BEGINNER.height && width === BEGINNER.width && mines === BEGINNER.mines ) {
       els.beginner.className = "active"
