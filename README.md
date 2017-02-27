@@ -22,3 +22,6 @@ You'll never lose on the first click - mines aren't seeded until the very first 
 
 ### No packages
 The game is written in ES2015 with no external modules or libraries.
+
+## To do:
+[] Pre-load images

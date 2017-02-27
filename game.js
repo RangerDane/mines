@@ -85,7 +85,11 @@ const minesweeper = (state, action) => {
       if( !revealed && !flagged ) {
         board[y][x].revealed = true
         if( adjacent === 0 ) {
-          [ [0,-1], [1,0], [0,1], [-1,0] ].forEach( ([deltay, deltax]) => {
+          [
+            [-1,-1], [0,-1], [1,-1],
+            [-1,0], [1,0],
+            [-1,1], [0,1], [1,1], 
+          ].forEach( ([deltay, deltax]) => {
             let next = { x: x + deltax, y: y + deltay }
             if (withinbounds(next)) queue.push(next)
           })
