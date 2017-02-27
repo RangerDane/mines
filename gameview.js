@@ -20,6 +20,10 @@ const querydom = id => document.getElementById(id)
 
 // view logic: here's the ugly part of the code that a framework lets you abstract away
 const creategameview = ( boardel ) => {
+  const BEGINNER = { height: 9, width: 9, mines: 10 }
+  const INTERMEDIATE = { height: 16, width: 16, mines: 40 }
+  const EXPERT = { height: 16, width: 30, mines: 99 }
+
   const els = {
     board: boardel,
     beginner: querydom("beginner"),
@@ -59,19 +63,17 @@ const creategameview = ( boardel ) => {
     return message.length > 0
   }
 
-  const newgame = () => {
-    let state = getparams()
-    if( invalidparams(state, error) ) return
+  const newgame = ({ height, width, mines }) => {
+    if( invalidparams({ height, width, mines }, error) ) return
 
     let previousStates = []
-    state = minesweeper(state)
+    let state = minesweeper({ height, width, mines })
 
     // this is the messy way to do things
     els.board.innerHTML = ""
 
     // "virtual DOM"
     var elements = [], rowarr, rowdiv, box
-    let { height, width } = state
     const buildboard = () => {
       els.undo.onclick = undo
       for (var y = 0; y < height; y++) {
@@ -158,11 +160,6 @@ const creategameview = ( boardel ) => {
       return false;
     }
 
-    // const rightclick = ({ x, y }) => (event) => {
-    //   render()
-    //   return false
-    // }
-
     const undo = () => {
       state = previousStates.pop()
       render()
@@ -170,20 +167,50 @@ const creategameview = ( boardel ) => {
 
     buildboard()
     render(state)
+    rendersettings(state)
   }
 
-  const renderpresets = ({ height, width, mines }) => () => {
+  const rendersettings = ({ height, width, mines }) => {
     els.height.value = height
     els.width.value = width
     els.mines.value = mines
+
+    els.beginner.className = ""
+    els.intermediate.className = ""
+    els.expert.className = ""
+    els.newgame.className = ""
+    els.newgame.disabled = true
+
+    if( height === BEGINNER.height && width === BEGINNER.width && mines === BEGINNER.mines ) {
+      els.beginner.className = "active"
+    } else if( height === INTERMEDIATE.height && width === INTERMEDIATE.width && mines === INTERMEDIATE.mines ) {
+      els.intermediate.className = "active"
+    } else if( height === EXPERT.height && width === EXPERT.width && mines === EXPERT.mines ) {
+      els.expert.className = "active"
+    } else {
+      els.newgame.className = "active"
+    }
+
   }
 
-  els.beginner.onclick = renderpresets({ height: 9, width: 9, mines: 10 })
-  els.intermediate.onclick = renderpresets({ height: 16, width: 16, mines: 40 })
-  els.expert.onclick = renderpresets({ height: 16, width: 30, mines: 99 })
+  const attachbutton = (settings) => () => {
+    newgame(settings)
+  }
 
-  els.newgame.onclick = newgame
-  newgame()
+  const undisablecustom = () => {
+    els.newgame.disabled = false;
+  }
+
+  els.beginner.onclick = attachbutton(BEGINNER)
+  els.intermediate.onclick = attachbutton(INTERMEDIATE)
+  els.expert.onclick = attachbutton(EXPERT)
+
+  els.height.oninput = undisablecustom
+  els.width.oninput = undisablecustom
+  els.mines.oninput = undisablecustom
+
+  els.newgame.onclick = () => { newgame(getparams()) }
+  newgame(BEGINNER)
 }
 
 creategameview( querydom("board") )
