@@ -87,8 +87,8 @@ const minesweeper = (state, action) => {
         if( adjacent === 0 ) {
           [
             [-1,-1], [0,-1], [1,-1],
-            [-1,0], [1,0],
-            [-1,1], [0,1], [1,1], 
+            [-1, 0],         [1, 0],
+            [-1, 1], [0, 1], [1, 1],
           ].forEach( ([deltay, deltax]) => {
             let next = { x: x + deltax, y: y + deltay }
             if (withinbounds(next)) queue.push(next)
